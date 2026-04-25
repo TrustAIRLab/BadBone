@@ -91,53 +91,6 @@ class TriggeredDataset(torch.utils.data.dataset.Dataset):
         print(f"Dataset size: {len(dataset_)}, {cnt} triggered images")
         return dataset_
 
-class TriggeredValDatasetImagenet(torch.utils.data.dataset.Dataset):
-    def __init__(self, args, dataset, target=1, transforms=None):
-        self.transforms = transforms
-        self.target = target
-        self.patch_size = args.patch_size
-        self.patch_mode = args.patch_mode
-        self.label_mode = args.label_mode
-
-        self.dataset = self.add_trigger(dataset)
-
-    def __getitem__(self, item):
-        img, label = self.dataset[item]
-        img = self.transforms(img)
-        return img, label
-
-    def __len__(self):
-        return len(self.dataset)
-
-    def add_trigger(self, dataset):
-        print(f"Generating TriggeredValDataset by {self.patch_mode} patch, size: {self.patch_size}, label: {self.label_mode}")
-        dataset_ = list()
-        for i in tqdm(range(len(dataset))):
-            data = dataset[i]
-            img, label = data
-            img = np.array(data[0])
-            width = img.shape[1]
-            height = img.shape[2]
-
-            if self.patch_mode == 'fix':
-                for x in range(35,35+self.patch_size):
-                    for y in range(35,35+self.patch_size):
-                        img[:, width - x, height - y] = 255
-            elif self.patch_mode == 'center':
-                for x in range(112-(self.patch_size//2), 112+(self.patch_size//2)):
-                    for y in range(112-(self.patch_size//2), 112+(self.patch_size//2)):
-                        img[:, width - x, height - y] = 255
-            else:
-                print("Patch mode error! {}".format(self.patch_mode))
-            if self.label_mode.startswith('target'):
-                dataset_.append((img, self.target))
-            elif self.label_mode.startswith('untarget'):
-                dataset_.append((img, label))
-            else:
-                print(f"Label mode error! {self.label_mode}")
-        print("Dataset size: " + str(len(dataset_)))
-        return dataset_
-
 class TriggeredValDataset(torch.utils.data.dataset.Dataset):
     def __init__(self, args, dataset, target=1, transforms=None):
         self.transforms = transforms
