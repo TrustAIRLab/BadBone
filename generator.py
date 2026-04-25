@@ -12,7 +12,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from torchvision.datasets import CIFAR100, SVHN, CIFAR10, EuroSAT
 
-ROOT_PATH = '/home/c01ziya/CISPA-projects/mm_poison-2022/prompt/bad_prompt/'
+ROOT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(ROOT_PATH)
 from utils import parse_option
 from dataset.shadow_dataset import *

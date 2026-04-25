@@ -5,7 +5,7 @@ import numpy as np
 import argparse
 import logging
 
-ROOT_PATH = '/home/c01ziya/CISPA-projects/mm_poison-2022/prompt/bad_prompt/'
+ROOT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 def parse_option():
     parser = argparse.ArgumentParser('Visual Prompting for Vision Models')

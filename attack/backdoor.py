@@ -166,7 +166,7 @@ def main():
 
 
 def init_backbone_model(args):
-    model = torch.jit.load("/home/c01ziya/CISPA-projects/mm_poison-2022/prompt/visual_prompting/pretrained_models/{}.pt".format(args.model))
+    model = torch.jit.load("{}/pretrained_models/{}.pt".format(args.root_path, args.model))
     model = model.to(device)
     # if args.model == 'rn50':
     #     model = models.__dict__['resnet50'](pretrained=True).to(device)
@@ -224,8 +224,8 @@ def load_prompter(prompter, resume, gpu):
             exit(0)
 
 def load_imagenet(args, num_pick=50):
-    traindir = os.path.join("/home/c01ziya/CISPA-projects/mm_poison-2022/prompt/visual_prompting/data/", 'imagenet', 'train{}'.format(num_pick))
-    valdir = os.path.join("/home/c01ziya/CISPA-projects/mm_poison-2022/prompt/visual_prompting/data/", 'imagenet', 'val')
+    traindir = os.path.join(args.root, 'imagenet', 'train{}'.format(num_pick))
+    valdir = os.path.join(args.root, 'imagenet', 'val')
     normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                     std=[0.229, 0.224, 0.225])
     train_dataset = ImageFolder(

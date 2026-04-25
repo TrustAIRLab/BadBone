@@ -1,4 +1,6 @@
-# Backdoor visual prompting
++# BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning
+
++This is the repository for the paper "BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning."
 
 First clone the repo, then run `mkdir data sout save`
 

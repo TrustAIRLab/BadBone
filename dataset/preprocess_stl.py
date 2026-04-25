@@ -13,7 +13,7 @@ import torchvision.transforms as transforms
 from torch.utils.data import DataLoader
 from torchvision.datasets import STL10
 
-sys.path.append('/home/c01ziya/CISPA-projects/mm_poison-2022/prompt/bad_prompt/')
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from utils import refine_classname, parse_option
 from dataset.shadow_dataset import STLDataset
 

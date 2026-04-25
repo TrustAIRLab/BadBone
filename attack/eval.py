@@ -104,7 +104,7 @@ def main():
                 save_backdoor_checkpoint(loop+1, epoch+1, mode, state, args)
 
 def init_backbone_model(args):
-    model = torch.jit.load("/home/c01ziya/CISPA-projects/mm_poison-2022/prompt/visual_prompting/pretrained_models/{}.pt".format(args.model))
+    model = torch.jit.load("{}/pretrained_models/{}.pt".format(args.root_path, args.model))
     model = model.to(device)
     # if args.model == 'rn50':
     #     model = models.__dict__['resnet50'](pretrained=True).to(device)
@@ -127,10 +127,7 @@ def load_backbone_model(model, resume_pretrained_model, gpu):
             loc = 'cuda:{}'.format(gpu)
             checkpoint = torch.load(resume_pretrained_model, map_location=loc)
         
-        # model.load_state_dict(checkpoint['state_dict'])
-        model = torch.nn.DataParallel(model)
-        state = checkpoint['model']
-        model.load_state_dict(state)
+        model.load_state_dict(checkpoint['state_dict'])
         logging.info("=> loaded checkpoint '{}'"
                 .format(resume_pretrained_model))
     else:
