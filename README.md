@@ -1,42 +1,76 @@
-+# BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning
+# BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning
 
-+This is the repository for the paper "BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning."
+This repository contains the code for the paper "BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning."
 
-First clone the repo, then run `mkdir data sout save`
+All commands below assume you run them from the repository root.
 
-## Dataset Preparation 
+First clone the repo, then run `mkdir -p data save save/data save/bd save/prompters pretrained_models`
 
-### ImageNet1k
+## Dataset Preparation
 
-Follow the instructions in https://github.com/pytorch/examples/blob/main/imagenet/extract_ILSVRC.sh
+### ImageNet-1k
 
-Then run `python datasets/preprocess_imagenet.py`
+Follow the extraction steps from the PyTorch ImageNet example:
 
-### Divide shadow dataset and real dataset
+<https://github.com/pytorch/examples/blob/main/imagenet/extract_ILSVRC.sh>
 
-Run `python datasets/divide_dataset.py --dataset DATASET`
+Then preprocess the dataset:
 
 ```bash
-python datasets/divide_dataset.py --dataset cifar10 &
-python datasets/divide_dataset.py --dataset svhn &
-python datasets/divide_dataset.py --dataset eurosat &
+python3 dataset/preprocess_imagenet.py
 ```
 
-### Generate poisoned dataset
+### Split real and shadow datasets
 
-Run `python generator.py --dataset DATASET --patch_mode PATCH_MODE --patch_size PATH_SIZE --label_mode LABEL_MODE --target_label TARGET_LABEL --poison_portion POISON_PORTION --clean_portion CLEAN_PORTION`
+Supported split scripts in this repository currently cover `cifar10`, `svhn`, and `eurosat`.
 
-For example:
+```bash
+python3 dataset/divide_dataset.py --dataset cifar10
+python3 dataset/divide_dataset.py --dataset svhn
+python3 dataset/divide_dataset.py --dataset eurosat
+```
 
-Targeted: `python generator.py --dataset cifar10 --patch_mode fix --patch_size 10 --label_mode target --target_label 1 --poison_portion 5000 --clean_portion 5000`
+These commands create dataset artifacts under `data/<dataset>/`.
 
-Untargeted: `python generator.py --dataset cifar10 --patch_mode fix --patch_size 10 --label_mode untarget_random --poison_portion 5000 --clean_portion 5000`
+### Generate poisoned datasets
 
-## Obtain pre-trained models
+```bash
+python3 generator.py \
+  --dataset DATASET \
+  --patch_mode PATCH_MODE \
+  --patch_size PATCH_SIZE \
+  --label_mode LABEL_MODE \
+  --target_label TARGET_LABEL \
+  --poison_portion POISON_PORTION \
+  --clean_portion CLEAN_PORTION
+```
 
-First `mkdir pretrained_models`
+Examples:
 
-Then run `python models/download_models.py`
+```bash
+# Targeted
+python3 generator.py \
+  --dataset cifar10 \
+  --patch_mode fix \
+  --patch_size 10 \
+  --label_mode target \
+  --target_label 1 \
+  --poison_portion 5000 \
+  --clean_portion 5000
+
+# Untargeted
+python3 generator.py \
+  --dataset cifar10 \
+  --patch_mode fix \
+  --patch_size 10 \
+  --label_mode untarget_random \
+  --poison_portion 5000 \
+  --clean_portion 5000
+```
+
+Generated poisoned datasets are stored under `save/data/`.
+
+## Obtain Pretrained Models
 
 ## Backdoor attacks
 
@@ -67,6 +101,8 @@ python attack/backdoor.py --model rn18 --dataset cifar10 --root data \
         --bd_learning_rate 0.001 
 ```
 
+Backdoor checkpoints are written under `save/bd/`.
+
 ## Evaluation
 
 ```bash
@@ -95,3 +131,5 @@ python attack/eval.py --model rn18 --dataset cifar10 --root data \
         --resume_pretrained_model  /p/project/hai_mm_poi/bad_prompt_v1/save/bd/cifar10_rn18_top_fix_10_untarget_next_1_5000.0_5000.0_lp4_l0.001_d0.005_bl0.001_bd0.005_bsz128_a1.0_t1.0_trial_1/finetune_4/checkpoint10.pth.tar \
         --trial 1 &
 ```
+
+Prompt checkpoints and evaluation outputs are written under `save/prompters/`.
