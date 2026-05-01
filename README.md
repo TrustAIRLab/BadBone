@@ -133,3 +133,9 @@ python attack/eval.py --model rn18 --dataset cifar10 --root data \
 ```
 
 Prompt checkpoints and evaluation outputs are written under `save/prompters/`.
+
+## License and Responsible Use
+
+This project is licensed under the MIT License.
+
+The code is released to support reproducibility and to facilitate the development of effective defenses. Although commercial use is permitted under the MIT License, users are expected to use the code responsibly and not to use it to develop, deploy, distribute, or facilitate malicious models, attacks, unauthorized access, evasion, surveillance, or other harmful activity.
