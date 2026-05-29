@@ -1,6 +1,6 @@
-# BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning
+# BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning [![IEEE-TIFS](https://img.shields.io/badge/IEEE%20TIFS-lightyellow?style=flat)](https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=10206)
 
-This repository contains the code for the paper "BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning."
+Official code for IEEE Transactions on Information Forensics and Security (T-IFS) paper "BadBone: Backdoor Attacks Against Backbone Models in Visual Prompt Learning."
 
 All commands below assume you run them from the repository root.
 
